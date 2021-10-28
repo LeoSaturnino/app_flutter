@@ -17,10 +17,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int _timer = 0;
 
   int qtdePomodoro = 0;
-  int timePomodoro = 1;
+  int timePomodoro = 25;
 
   String buttonText = 'START';
-  String timerText = '01 : 00';
+  String timerText = '25 : 00';
   bool _active = true;
   bool _activebutton = true;
 
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _start = false;
       qtdePomodoro++;
-      timePomodoro = 1;
+      timePomodoro = 25;
       _activebutton = true;
       buttonText = 'START';
       _timer = 0;
@@ -87,13 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
     _start = false;
     _startdescanco = false;
     qtdePomodoro = 0;
-    timePomodoro = 1;
+    timePomodoro = 25;
   }
 
   void _descancoPomodoro() {
     setState(() {
       _startdescanco = true;
-      timePomodoro = 1;
+      timePomodoro = 5;
       _activebutton = false;
       if (qtdePomodoro % 4 == 0) {
         timePomodoro = 25;
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _playAudio('audio/alert1.mp3');
     setState(() {
       _startdescanco = false;
-      timePomodoro = 1;
+      timePomodoro = 25;
       _activebutton = true;
       buttonText = 'START';
       _timer = 0;

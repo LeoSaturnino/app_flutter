@@ -16,6 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _startdescanco = false;
   int _timer = 0;
 
+  int qtdeAgua = 0;
   int qtdePomodoro = 0;
   int timePomodoro = 25;
 
@@ -23,6 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String timerText = '25 : 00';
   bool _active = true;
   bool _activebutton = true;
+  bool _showWater = false;
 
   AudioCache audioPlayer = AudioCache();
 
@@ -32,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _startStopPomodoro() {
     setState(() {
+      _showWater = false;
       if (_start) {
         _activebutton = true;
         buttonText = 'START';
@@ -59,9 +62,20 @@ class _MyHomePageState extends State<MyHomePage> {
         if (_timer >= (timePomodoro * 60)) {
           _stopPomodoro();
         }
+        // if (_timer % 10 == 0) {
+        //   _pauseWater();
+        // }
       });
     }
   }
+
+  // void _pauseWater() {
+  //   _showWater = true;
+  //   _activebutton = true;
+  //   buttonText = 'START';
+  //   _start = false;
+  //   _startdescanco = false;
+  // }
 
   void _timerPomodoro() {
     Timer(const Duration(seconds: 1), _startPomodoro);
@@ -85,8 +99,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void _resetPomodoro() {
     _stopPomodoro();
     _start = false;
+    _showWater = false;
     _startdescanco = false;
+    _activebutton = true;
+    buttonText = 'START';
     qtdePomodoro = 0;
+    qtdeAgua = 0;
     timePomodoro = 25;
   }
 
@@ -128,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
       buttonText = 'START';
       _timer = 0;
       timerText = '${timePomodoro.toString().padLeft(2, '0')} : 00';
+      _showWater = true;
     });
   }
 
@@ -138,11 +157,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: AnimatedCrossFade(
+          firstChild: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AnimatedCrossFade(
@@ -183,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 timerText,
-                style: Theme.of(context).textTheme.headline2,
+                style: const TextStyle(fontSize: 48),
               ),
               const SizedBox(
                 height: 50,
@@ -208,10 +228,50 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
+          secondChild: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 320,
+                  height: 200,
+                  child: Image.asset('assets/images/agua.gif'),
+                ),
+                const SizedBox(
+                  height: 35,
+                ),
+                const Text(
+                  'Hora de Beber',
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                  'Água!',
+                  style: TextStyle(fontSize: 30),
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                ElevatedButton(
+                  onPressed: _startStopPomodoro,
+                  child: Text(
+                    buttonText,
+                  ),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+              ]),
+          crossFadeState:
+              _showWater ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          duration: const Duration(seconds: 1),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _resetPomodoro,
-          child: Text('$qtdePomodoro'),
-        ));
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _resetPomodoro,
+        child: Text('$qtdePomodoro'),
+      ), 
+    );
   }
 }

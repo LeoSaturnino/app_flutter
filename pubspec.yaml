@@ -62,8 +62,10 @@ flutter:
   assets:
     - assets/images/descanco.gif
     - assets/images/programacao.gif
+    - assets/images/agua.gif
     - assets/audio/alert1.mp3
     - assets/audio/alert2.mp3
+    - assets/audio/alert3.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
